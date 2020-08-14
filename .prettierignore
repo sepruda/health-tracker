@@ -1,0 +1,6 @@
+node_modules
+.cache
+public
+package.json
+schema.json
+src/types/generated/api.tsx
