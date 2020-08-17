@@ -10,24 +10,45 @@ import {
   Typography,
 } from '@material-ui/core'
 import { DatePicker } from '@material-ui/pickers'
+import moment from 'moment'
+
+import firebase from './Firebase/firebase'
 
 function NewEntry() {
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [values, setValues] = useState({
+    date: moment().format('MMMM Do YY'),
+    sleep: 5,
+    arms: 5,
+    mood: 5,
+    computer: 5,
+  })
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date)
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    console.log('Button clicked', values)
+    const entry = values
+    console.log('entry', entry)
+    const ref = firebase.database().ref('entries')
+    ref.push(entry)
   }
 
-  const handleOnClick = (e) => {
-    e.preventDefault()
-    console.log('Button clicked')
+  const handleValueChange = (e, newValue) => {
+    if (e.target.id) {
+      setValues({ ...values, [e.target.id]: newValue })
+    }
+  }
+
+  const handleDateChange = (date) => {
+    console.log('date', moment(date).format('MMM Do YY'))
+    setValues({ ...values, date: moment(date).format('MMMM Do YY') })
   }
 
   return (
-    <div
+    <form
       css={css`
         padding: 0 20px;
       `}
+      onSubmit={handleOnSubmit}
     >
       <Card
         css={css`
@@ -45,22 +66,24 @@ function NewEntry() {
             format="dddd - DD. MMMM"
             margin="normal"
             label="dato"
-            id="date-picker"
-            value={selectedDate}
+            id="date"
             onChange={handleDateChange}
+            autoOk
+            value={values.date}
           />
           <div>
             <Typography id="sleep-slider" gutterBottom>
               Søvn
             </Typography>
             <Slider
-              defaultValue={5}
               aria-labelledby="sleep-slider"
               valueLabelDisplay="auto"
+              id="sleep"
+              value={values.sleep}
               step={1}
-              marks
               min={0}
               max={10}
+              onChange={handleValueChange}
             />
           </div>
           <div>
@@ -68,11 +91,12 @@ function NewEntry() {
               Arme
             </Typography>
             <Slider
-              defaultValue={5}
               aria-labelledby="arms-slider"
               valueLabelDisplay="auto"
+              id="arms"
+              value={values.arms}
+              onChange={handleValueChange}
               step={1}
-              marks
               min={0}
               max={10}
             />
@@ -82,13 +106,14 @@ function NewEntry() {
               Humør
             </Typography>
             <Slider
-              defaultValue={5}
               aria-labelledby="mood-slider"
               valueLabelDisplay="auto"
               step={1}
-              marks
               min={0}
               max={10}
+              id="mood"
+              value={values.mood}
+              onChange={handleValueChange}
             />
           </div>
           <div>
@@ -96,21 +121,22 @@ function NewEntry() {
               Computer/Telefon
             </Typography>
             <Slider
-              defaultValue={5}
               aria-labelledby="screen-slider"
               valueLabelDisplay="auto"
               step={1}
-              marks
               min={0}
               max={10}
+              id="computer"
+              value={values.computer}
+              onChange={handleValueChange}
             />
           </div>
         </CardContent>
         <CardActions>
-          <Button onClick={handleOnClick}>Gem</Button>
+          <Button type="submit">Gem</Button>
         </CardActions>
       </Card>
-    </div>
+    </form>
   )
 }
 
