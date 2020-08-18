@@ -70,9 +70,10 @@ function NewEntry() {
         <Card
           css={css`
             min-width: 275px;
-            max-width: 350px;
+            max-width: 100vw;
             background-color: lavenderblush;
             padding: 0 30px;
+            margin-bottom: 2rem;
           `}
         >
           <CardContent>
