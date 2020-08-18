@@ -70,7 +70,7 @@ export default function History() {
         Historik
       </Typography>
       <ResponsiveLine
-        margin={{ top: 60, bottom: 50, left: 60, right: 50 }}
+        margin={{ top: 60, bottom: 50, left: 60, right: 110 }}
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
@@ -100,8 +100,8 @@ export default function History() {
         data={data}
         legends={[
           {
-            anchor: 'top',
-            direction: 'row',
+            anchor: 'bottom-right',
+            direction: 'column',
             justify: false,
             translateX: 100,
             translateY: 0,
