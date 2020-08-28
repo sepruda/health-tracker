@@ -24,31 +24,25 @@ const SliderWrapper = styled.div`
 `
 
 function NewEntry() {
-  const [values, setValues] = useState({
-    date: moment().format('MMMM Do YY'),
-    sleep: 5,
-    arms: 5,
-    mood: 5,
-    computer: 5,
-  })
+  const [date, setDate] = useState(new Date())
+  const [sleep, setSleep] = useState(5)
+  const [arms, setArms] = useState(5)
+  const [mood, setMood] = useState(5)
+  const [computer, setComputer] = useState(5)
   const [open, setOpen] = useState(false)
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    const entry = values
+    const entry = {
+      date: moment(date).format('MMMM Do YY'),
+      sleep,
+      arms,
+      mood,
+      computer,
+    }
     const ref = firebase.database().ref('entries')
     ref.push(entry)
     setOpen(true)
-  }
-
-  const handleValueChange = (e, newValue) => {
-    if (e.target.id) {
-      setValues({ ...values, [e.target.id]: newValue })
-    }
-  }
-
-  const handleDateChange = (date) => {
-    setValues({ ...values, date: moment(date).format('MMMM Do YY') })
   }
 
   const handleClose = (e, reason) => {
@@ -87,9 +81,9 @@ function NewEntry() {
                 margin="normal"
                 label="dato"
                 id="date"
-                onChange={handleDateChange}
+                onChange={setDate}
                 autoOk
-                value={values.date}
+                value={date}
               />
             </SliderWrapper>
             <SliderWrapper>
@@ -100,11 +94,11 @@ function NewEntry() {
                 aria-labelledby="sleep-slider"
                 valueLabelDisplay="auto"
                 id="sleep"
-                value={values.sleep}
+                value={sleep}
                 step={1}
                 min={0}
                 max={10}
-                onChange={handleValueChange}
+                onChange={(e, newValue) => setSleep(newValue)}
                 marks={goodBadMarks}
               />
             </SliderWrapper>
@@ -116,8 +110,8 @@ function NewEntry() {
                 aria-labelledby="arms-slider"
                 valueLabelDisplay="auto"
                 id="arms"
-                value={values.arms}
-                onChange={handleValueChange}
+                value={arms}
+                onChange={(e, newValue) => setArms(newValue)}
                 step={1}
                 min={0}
                 max={10}
@@ -135,8 +129,8 @@ function NewEntry() {
                 min={0}
                 max={10}
                 id="mood"
-                value={values.mood}
-                onChange={handleValueChange}
+                value={mood}
+                onChange={(e, newValue) => setMood(newValue)}
                 marks={goodBadMarks}
               />
             </SliderWrapper>
@@ -151,8 +145,8 @@ function NewEntry() {
                 min={0}
                 max={10}
                 id="computer"
-                value={values.computer}
-                onChange={handleValueChange}
+                value={computer}
+                onChange={(e, newValue) => setComputer(newValue)}
                 marks={goodBadMarks}
               />
             </SliderWrapper>
